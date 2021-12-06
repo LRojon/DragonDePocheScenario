@@ -1,7 +1,32 @@
-var button = document.getElementById('gen');
-var result = document.getElementById('result');
-var hist = document.getElementById('history');
-var dice = function (formula) {
+class Scenar {
+    constructor(begining, mission, place, ennemy) {
+        this.begining = begining
+        this.mission = mission
+        this.place = place
+        this.ennemy = ennemy
+    }
+
+    toHTML() {
+        return "<tr><td style='color: royalblue'>" +
+                    this.begining +
+                    "</td><td style='color: orange'>" +
+                    this.mission +
+                    "</td><td style='color: lime'>" +
+                    this.place +
+                    "</td><td style='color: red'>" +
+                    this.ennemy +
+                    "</td></tr>"
+    }
+}
+
+let button = document.getElementById('gen');
+let result = document.getElementById('result');
+let ennemies = document.getElementById('ennemies');
+
+let currentScenar = null
+let allScenar = []
+
+const dice = function (formula) {
     var nDice = parseInt(formula.split(/[dD]/gm)[0]);
     var fDice = parseInt(formula.split(/[dD]/gm)[1].split('+')[0]);
     var ret = 0;
@@ -13,21 +38,52 @@ var dice = function (formula) {
     }
     return ret;
 };
-button === null || button === void 0 ? void 0 : button.addEventListener('click', function (ev) {
-    if (result && hist) {
-        result.innerHTML = "<p><span style='color: royalblue'>" +
-            theBegining() +
-            "</span>&emsp;<span style='color: orange'>" +
-            theMission() +
-            "</span>&emsp;<span style='color: lime'>" +
-            thePlace() +
-            "</span>&emsp;<span style='color: red'>" +
-            theEnney() +
-            "</span></p>";
-        hist.innerHTML += "<p>" + result.innerText + "</p>";
+
+/*button.addEventListener('click', function (ev) {
+    if (result && hist && ennemies) {
+        let ennemy = ennemies.value;
+        let line = "<tr><td style='color: royalblue'>" +
+                    theBegining() +
+                    "</td><td style='color: orange'>" +
+                    theMission() +
+                    "</td><td style='color: lime'>" +
+                    thePlace() +
+                    "</td><td style='color: red'>" +
+                    theEnnemy(ennemy) +
+                    "</td></tr>"
+        result.innerHTML =  "<tr>" +
+                            "    <th>Le commencement</th>" +
+                            "    <th>La mission</th>" +
+                            "    <th>Le lieu</th>" +
+                            "    <th>L'ennemi</th>" +
+                            "</tr>";
+        result.innerHTML += line
+        hist.innerHTML += line;
+    }
+});*/
+
+const scenarsToHTML = (current, all) => {
+    let html = '<tr><th>Le commencement</th><th>La mission</th><th>Le lieu</th><th>L\'ennemi</th></tr>'
+    html += current.toHTML()
+    html += '<tr></tr>'
+    let isFirst = true
+    for(scenar of all) {
+        if(isFirst) { isFirst = false }
+        else { html += scenar.toHTML() }
+    }
+
+    result.innerHTML = html
+}
+
+button.addEventListener('click', function (ev) {
+    if (result && ennemies) {
+        currentScenar = new Scenar(theBegining(), theMission(), thePlace(), theEnnemy(ennemies.value))
+        allScenar.unshift(currentScenar)
+        scenarsToHTML(currentScenar, allScenar)
     }
 });
-var theBegining = function () {
+
+const theBegining = function () {
     switch (parseInt(dice('1d6').toString() + dice('1d6'))) {
         case 11: return "Au cœur d’un salon confortable";
         case 12: return "Des enfants ont disparu";
@@ -44,11 +100,11 @@ var theBegining = function () {
         case 31: return "Sur les bords d’un lac";
         case 32: return "Sur les marches d’un temple perdu";
         case 33: return "Un appel à l’aide";
-        case 34: return "Un défi lancé par un roi35Un dragon a été tué";
+        case 34: return "Un défi lancé par un roi";
         case 35: return "Un dragon a été tué";
         case 36: return "Un incendie de forêt";
         case 41: return "Un murmure porté par les génies du vent";
-        case 42: return "Un rendez-vous secret avec des gens bizarres";
+        case 42: return "Un rendez - vous secret avec des gens bizarres";
         case 43: return "Un rêve prémonitoire";
         case 44: return "Un ulfur messager";
         case 45: return "Un village est attaqué par des trolls";
@@ -68,7 +124,8 @@ var theBegining = function () {
         default: return "Error";
     }
 };
-var theMission = function () {
+
+const theMission = function () {
     switch (parseInt(dice('1d6').toString() + dice('1d6'))) {
         case 11: return "Acheter un objet précieux à un maître artisan";
         case 12: return "Aider une ou des personnes";
@@ -109,7 +166,8 @@ var theMission = function () {
         default: return "Error";
     }
 };
-var thePlace = function () {
+
+const thePlace = function () {
     switch (parseInt(dice('1d6').toString() + dice('1d6'))) {
         case 11: return "Dans un port fluvial infesté de pirates";
         case 12: return "Des arènes";
@@ -117,10 +175,10 @@ var thePlace = function () {
         case 14: return "Des marais pestilentiels";
         case 15: return "La Vallée des Morts qui Courent";
         case 16: return "Le Palais des Mille Plaisirs";
-        case 21: return "Le sanctuaire perdu des hommes-dragons";
+        case 21: return "Le sanctuaire perdu des hommes - dragons";
         case 22: return "Le temple du dieu aveugle dont personne ne connaît le nom";
         case 23: return "Les bayous maudits des gardiens aux yeux d’or";
-        case 24: return "Les bois-poison de Succulente";
+        case 24: return "Les bois - poison de Succulente";
         case 25: return "Les cavernes de cristal de Lucène";
         case 26: return "Les coteaux des collines brûlées d’Enclume";
         case 31: return "Les forêts anciennes de Cornecroc";
@@ -150,44 +208,89 @@ var thePlace = function () {
         default: return "Error";
     }
 };
-var theEnney = function () {
-    switch (parseInt(dice('1d6').toString() + dice('1d6'))) {
-        case 11: return "Barbiroux&emsp;&emsp;-&emsp;L’alité";
-        case 12: return "Charbonneux&emsp;-&emsp;L’aveugle";
-        case 13: return "Cœur de marbre&emsp;-&emsp;L’énorme";
-        case 14: return "Couronné&emsp;&emsp;-&emsp;L’épouvanté";
-        case 15: return "Crapaudin&emsp;&emsp;-&emsp;L’évanescent";
-        case 16: return "Dents-de-bois&emsp;-&emsp;L’immonde";
-        case 21: return "Double-queue&emsp;-&emsp;L’impatient";
-        case 22: return "Draekan&emsp;&emsp;-&emsp;L’impétrant";
-        case 23: return "Dragobelin&emsp;&emsp;-&emsp;L’indicible";
-        case 24: return "Dragon-baleine&emsp;-&emsp;Le boiteux";
-        case 25: return "Dragonbellule&emsp;-&emsp;Le bouffi";
-        case 26: return "Dragon-juge&emsp;-&emsp;Le brutal";
-        case 31: return "Dragon-luciole&emsp;-&emsp;Le cruel";
-        case 32: return "Dragon-ruche&emsp;-&emsp;Le destructeur";
-        case 33: return "Drakaragne&emsp;&emsp;-&emsp;Le dévoreur";
-        case 34: return "Drakoférox&emsp;&emsp;-&emsp;Le fou";
-        case 35: return "Drakomouth&emsp;&emsp;-&emsp;Le furibond";
-        case 36: return "Drasaurus&emsp;&emsp;-&emsp;Le gluant";
-        case 41: return "Écailleux&emsp;&emsp;-&emsp;Le gravide";
-        case 42: return "Flamiche&emsp;&emsp;-&emsp;Le majestueux";
-        case 43: return "Frégatine&emsp;&emsp;-&emsp;Le maléfique";
-        case 44: return "Gran’cornu&emsp;&emsp;-&emsp;Le nerveux";
-        case 45: return "Lourchefangue&emsp;&emsp;-&emsp;Le noir";
-        case 46: return "Malifeux&emsp;-&emsp;Le pénible";
-        case 51: return "Mange-monde&emsp;-&emsp;Le puant";
-        case 52: return "Maresqueux&emsp;&emsp;-&emsp;Le quêteur";
-        case 53: return "Négéglace&emsp;&emsp;-&emsp;Le rouge";
-        case 54: return "Noir de suie&emsp;-&emsp;Le rusé";
-        case 55: return "Pustuleux&emsp;&emsp;-&emsp;Le sinistre";
-        case 56: return "Queue-d’épines&emsp;-&emsp;Le sourd";
-        case 61: return "Ricaneur&emsp;&emsp;-&emsp;Le tarabusteur";
-        case 62: return "Salamandrake&emsp;-&emsp;Le terrifiant";
-        case 63: return "Scaracier&emsp;&emsp;-&emsp;Le torve";
-        case 64: return "Tarantantale&emsp;-&emsp;Le tragédien";
-        case 65: return "Ténébrax&emsp;&emsp;-&emsp;Le troué";
-        case 66: return "Vifombre&emsp;&emsp;-&emsp;Le verbeux";
-        default: return "Error";
+
+const theEnnemy = function (ennemy) {
+    switch (ennemy) {
+        case 'random':
+            switch (parseInt(dice('1d6').toString() + dice('1d6'))) {
+                case 11: return "<table class='ennemy'><tr><td>Barbiroux</td><td>L’alité</td></tr></table>";
+                case 12: return "Charbonneux - L’aveugle";
+                case 13: return "Cœur de marbre - L’énorme";
+                case 14: return "Couronné - L’épouvanté";
+                case 15: return "Crapaudin - L’évanescent";
+                case 16: return "Dents - de - bois - L’immonde";
+                case 21: return "Double - queue - L’impatient";
+                case 22: return "Draekan - L’impétrant";
+                case 23: return "Dragobelin - L’indicible";
+                case 24: return "Dragon - baleine - Le boiteux";
+                case 25: return "Dragonbellule - Le bouffi";
+                case 26: return "Dragon - juge - Le brutal";
+                case 31: return "Dragon - luciole - Le cruel";
+                case 32: return "Dragon - ruche - Le destructeur";
+                case 33: return "Drakaragne - Le dévoreur";
+                case 34: return "Drakoférox - Le fou";
+                case 35: return "Drakomouth - Le furibond";
+                case 36: return "Drasaurus - Le gluant";
+                case 41: return "Écailleux - Le gravide";
+                case 42: return "Flamiche - Le majestueux";
+                case 43: return "Frégatine - Le maléfique";
+                case 44: return "Gran’cornu - Le nerveux";
+                case 45: return "Lourchefangue - Le noir";
+                case 46: return "Malifeux - Le pénible";
+                case 51: return "Mange - monde - Le puant";
+                case 52: return "Maresqueux - Le quêteur";
+                case 53: return "Négéglace - Le rouge";
+                case 54: return "Noir de suie - Le rusé";
+                case 55: return "Pustuleux - Le sinistre";
+                case 56: return "Queue - d’épines - Le sourd";
+                case 61: return "Ricaneur - Le tarabusteur";
+                case 62: return "Salamandrake - Le terrifiant";
+                case 63: return "Scaracier - Le torve";
+                case 64: return "Tarantantale - Le tragédien";
+                case 65: return "Ténébrax - Le troué";
+                case 66: return "Vifombre - Le verbeux";
+                default: return "Error";
+            }
+        case "assassin":
+            switch (dice('1d6')) {
+                case 1: return 'l\'assassin Brûle - feu';
+                case 2: return 'l\'assassin Le Diacre';
+                case 3: return 'l\'assassin Le Fossoyeur';
+                case 4: return 'l\'assassin Le Maître d\'hôtel';
+                case 5: return 'l\'assassin Le Sonneur de cloches';
+                case 6: return 'Masque';
+                default: return 'Error';
+            }
+        case 'warchief':
+            switch (dice('1d6')) {
+                case 1: return 'le chef de guerre Capitaine Ardent';
+                case 2: return 'le chef de guerre Fer de Lance';
+                case 3: return 'le chef de guerre Général Main - Rouge';
+                case 4: return 'la cheffe de guerre La Folle';
+                case 5: return 'le chef de guerre Queue de Baliste';
+                case 6: return 'le chef de guerre Trois doigts';
+                default: return 'Error';
+            }
+        case 'sorcerer':
+            switch (dice('1d6')) {
+                case 1: return 'le sorcelier Feu Follet';
+                case 2: return 'le sorcelier Le Munificent';
+                case 3: return 'le sorcelier Le Ratier';
+                case 4: return 'le sorcelier Le Sculpteur';
+                case 5: return 'le sorcelier Longs Sourcils';
+                case 6: return 'le sorcelier Sérénissime';
+                default: return 'Error';
+            }
+        case 'lich':
+            switch (dice('1d6')) {
+                case 1: return 'la liche Assya la reine d’ébène';
+                case 2: return 'la liche Cataserept Sable - rouge';
+                case 3: return 'la liche Clockenwork le mécanique';
+                case 4: return 'la liche Finkelbel le dragon d’os';
+                case 5: return 'la liche Trokkenfirr Sang - de - Glace';
+                case 6: return 'la liche Vernac Alascubile';
+                default: return 'Error';
+            }
+        default: return 'Error';
     }
 };

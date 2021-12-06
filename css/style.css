@@ -8,28 +8,52 @@
 }
 
 body {
+    height: 98vh;
+    width: 98vw;
+}
+
+.header {
     display: flex;
     flex-direction: column;
+    background-color: royalblue;
+    width: 50%;
+    height: 8%;
     align-items: center;
-    
-    height: 98vh;
+    font-size: 1.3em;
+    background: linear-gradient(to right, var(--main-color) 0%, royalblue 50%, var(--main-color) 100%);
+    margin: auto;
+}
+.header > p:first-child {
+    margin-top: 7px;
+}
+.header > p:last-child{
+    margin-top: -10px;
+}
+.header > p a {
+    color: darkred;
+}
+.header > p a:visited {
+    color: darkred;
 }
 
 h1 {
-    flex: 1;
+    height: 6%;
     width: 50%;
     text-align: center;
     margin: 5px;
     font-size: 3em;
     border-bottom: solid 2px #fff4;
     color: rgb(110, 142, 238);
+    margin: auto;
 }
 div.action {
+    height: 6%;
     display: flex;
-    flex: 1;
-    justify-content: center;
+    justify-content: space-around;
     margin: 5px;
-    width: 99%;
+    width: 30%;
+    align-items: center;
+    margin: auto;
 }
 button {
     font-size: 2.5em;
@@ -46,29 +70,39 @@ button:hover {
     background-color: green;
 }
 
-div:not(.action) {
-    border: solid #fff8 2px;
+select {
+    font-size: 1.5em;
+    font-family: 'Almendra';
+    border: none;
     border-radius: 10px;
+    background-color: royalblue;
+    color: var(--text-color);
     margin: 5px;
-    width: 50%;
-    min-height: 100px;
-}
-
-div.history {
-    margin-top: 1em;
-    min-height: 500px;
-    overflow-y: auto;
-}
-div.history > p {
-    margin: 5px;
-    border-bottom: solid #fff4 1px;
+    padding: 5px 10px 5px 10px;
     text-align: center;
 }
-div.result > p {
-    margin: 0px 5px 5px 5px;
+
+table:not(.ennemy) {
+    border: solid #fff8 2px;
+    border-radius: 5px;
+    margin: 5px;
+    width: 80%;
+    height: 750px;
+    overflow: scroll;
+    margin: auto;
 }
 
-div.result::before {
+table:not(.ennemy) td, table:not(.ennemy) th {
+    border: solid 1px #fff8;
+    height: 50px;
+    border-right: none;
+    border-left: none;
+}
+table:not(.ennemy) td > span {
+    text-align: center;
+}
+
+/*table::before {
     content: 'Scénario';
     position: relative;
     top: -0.7em;
@@ -76,55 +110,22 @@ div.result::before {
     font-size: 2em;
     padding: 0px 5px 0px 5px;
     background-color: var(--main-color);
+}*/
+
+table:not(.ennemy) th:not(:last-child) {
+    width: 27%;
+}
+table:not(.ennemy) th:last-child {
+    width: 19%;
 }
 
-footer {
-    display: flex;
-    flex: 1;
-    background-color: royalblue;
-    margin-top: 5px;
-    width: 100vw;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.3em;
+table.ennemy {
+    width: 100%;
 }
-footer > p:last-child {
-    margin-top: -15px;
-}
-
-footer > p a {
-    color: darkred;
-}
-footer > p a:visited {
-    color: darkred;
-}
-
-@media only screen and (hover: none) and (pointer: coarse){
-
-    h1 {
-        font-size: 1.5em;
-    }
-    button {
-        font-size: 1em;
-    }
-    div:not(.action) {
-        width: 95%;
-    }
-    div.result::before {
-        font-size: 1em;
-    }
-    div.history {
-        min-height: 400px;
-    }
-    footer {
-        font-size: 1em;
-        text-align: center;
-    }
-    footer > p {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
+table.ennemy td {
+    width: 50%;
+    text-align: center;
+    border: none;
 }
 
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
+        <!--<meta http-equiv="Refresh" content="3">-->
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content-language="fr-FR">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +14,30 @@
         <title>Scénari-Minute</title>
     </head>
     <body>
+        <div class="header">
+            <p>Toutes informations générées par ce site, sont la propriété de <a target="blank" href="http://legrumph.org/Terrier/public/">Le Grümph</a>.</p>
+            <p>Les scénarios proposé ici sont issu de l'ouvrage <a target="blank" href="http://legrumph.org/Terrier/public/chibi/dragon-de-poche2"><i>Dragon de poche²</i></a>.</p>
+        </div>
         <h1>Générer un scénario simple en un click !!</h1>
         <div class="action" >
             <button id="gen" >Générer</button>
+            <select id="ennemies" >
+                <option value="random">Ennemies aléatoire</option>
+                <option value="assassin">Un assassin</option>
+                <option value="warchief">Un chef de guerre</option>
+                <option value="sorcerer">Un sorcelier</option>
+                <option value="lich">Une liche</option>
+            </select>
         </div>
-        <div id="result" class="result"></div>
-        <div id="history" class="history"></div>
-        <footer>
-            <p>Toutes informations générées par ce site, sont la propriété de <a target="blank" href="http://legrumph.org/Terrier/public/">Le Grümph</a>.</p>
-            <p>Les scénarios proposé ici sont issu de l'ouvrage <a target="blank" href="http://legrumph.org/Terrier/public/chibi/dragon-de-poche2"><i>Dragon de poche²</i></a>.</p>
-        </footer>
+        <table cellspacing="0" id="result" class="result">
+            <tr>
+                <th>Le commencement</th>
+                <th>La mission</th>
+                <th>Le lieu</th>
+                <th>L\'ennemi</th>
+            </tr>
+            <!-- Les scénarios générés apparaitront ici -->
+        </table>
     </body>
     <script src="./js/script.js"></script>
 </html>
