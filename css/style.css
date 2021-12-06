@@ -47,20 +47,22 @@ button:hover {
 }
 
 div:not(.action) {
-    flex: 5;
     border: solid #fff8 2px;
     border-radius: 10px;
     margin: 5px;
     width: 50%;
+    min-height: 100px;
 }
 
 div.history {
     margin-top: 1em;
-    min-height: 550px;
+    min-height: 500px;
     overflow-y: auto;
 }
 div.history > p {
     margin: 5px;
+    border-bottom: solid #fff4 1px;
+    text-align: center;
 }
 div.result > p {
     margin: 0px 5px 5px 5px;
