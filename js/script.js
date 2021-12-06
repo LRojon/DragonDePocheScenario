@@ -25,6 +25,7 @@ let ennemies = document.getElementById('ennemies');
 
 let currentScenar = null
 let allScenar = []
+const MEMORY = 10
 
 const dice = function (formula) {
     var nDice = parseInt(formula.split(/[dD]/gm)[0]);
@@ -62,10 +63,10 @@ const dice = function (formula) {
     }
 });*/
 
-const scenarsToHTML = (current, all) => {
+const scenarsToHTML = (current, all = []) => {
     let html = '<tr><th>Le commencement</th><th>La mission</th><th>Le lieu</th><th>L\'ennemi</th></tr>'
     html += current.toHTML()
-    html += '<tr></tr>'
+    //html += '<tr class="separator"><td></td><td></td><td></td><td></td></tr>'
     let isFirst = true
     for(scenar of all) {
         if(isFirst) { isFirst = false }
@@ -79,6 +80,7 @@ button.addEventListener('click', function (ev) {
     if (result && ennemies) {
         currentScenar = new Scenar(theBegining(), theMission(), thePlace(), theEnnemy(ennemies.value))
         allScenar.unshift(currentScenar)
+        if(allScenar.length > MEMORY) { allScenar.pop() }
         scenarsToHTML(currentScenar, allScenar)
     }
 });
@@ -214,41 +216,41 @@ const theEnnemy = function (ennemy) {
         case 'random':
             switch (parseInt(dice('1d6').toString() + dice('1d6'))) {
                 case 11: return "<table class='ennemy'><tr><td>Barbiroux</td><td>L’alité</td></tr></table>";
-                case 12: return "Charbonneux - L’aveugle";
-                case 13: return "Cœur de marbre - L’énorme";
-                case 14: return "Couronné - L’épouvanté";
-                case 15: return "Crapaudin - L’évanescent";
-                case 16: return "Dents - de - bois - L’immonde";
-                case 21: return "Double - queue - L’impatient";
-                case 22: return "Draekan - L’impétrant";
-                case 23: return "Dragobelin - L’indicible";
-                case 24: return "Dragon - baleine - Le boiteux";
-                case 25: return "Dragonbellule - Le bouffi";
-                case 26: return "Dragon - juge - Le brutal";
-                case 31: return "Dragon - luciole - Le cruel";
-                case 32: return "Dragon - ruche - Le destructeur";
-                case 33: return "Drakaragne - Le dévoreur";
-                case 34: return "Drakoférox - Le fou";
-                case 35: return "Drakomouth - Le furibond";
-                case 36: return "Drasaurus - Le gluant";
-                case 41: return "Écailleux - Le gravide";
-                case 42: return "Flamiche - Le majestueux";
-                case 43: return "Frégatine - Le maléfique";
-                case 44: return "Gran’cornu - Le nerveux";
-                case 45: return "Lourchefangue - Le noir";
-                case 46: return "Malifeux - Le pénible";
-                case 51: return "Mange - monde - Le puant";
-                case 52: return "Maresqueux - Le quêteur";
-                case 53: return "Négéglace - Le rouge";
-                case 54: return "Noir de suie - Le rusé";
-                case 55: return "Pustuleux - Le sinistre";
-                case 56: return "Queue - d’épines - Le sourd";
-                case 61: return "Ricaneur - Le tarabusteur";
-                case 62: return "Salamandrake - Le terrifiant";
-                case 63: return "Scaracier - Le torve";
-                case 64: return "Tarantantale - Le tragédien";
-                case 65: return "Ténébrax - Le troué";
-                case 66: return "Vifombre - Le verbeux";
+                case 12: return "<table class='ennemy'><tr><td>Charbonneux</td><td>L’aveugle</td></tr></table>";
+                case 13: return "<table class='ennemy'><tr><td>Cœur de marbre</td><td>L’énorme</td></tr></table>";
+                case 14: return "<table class='ennemy'><tr><td>Couronné</td><td>L’épouvanté</td></tr></table>";
+                case 15: return "<table class='ennemy'><tr><td>Crapaudin</td><td>L’évanescent</td></tr></table>";
+                case 16: return "<table class='ennemy'><tr><td>Dents - de - bois</td><td>L’immonde</td></tr></table>";
+                case 21: return "<table class='ennemy'><tr><td>Double - queue</td><td>L’impatient</td></tr></table>";
+                case 22: return "<table class='ennemy'><tr><td>Draekan</td><td>L’impétrant</td></tr></table>";
+                case 23: return "<table class='ennemy'><tr><td>Dragobelin</td><td>L’indicible</td></tr></table>";
+                case 24: return "<table class='ennemy'><tr><td>Dragon - baleine</td><td>Le boiteux</td></tr></table>";
+                case 25: return "<table class='ennemy'><tr><td>Dragonbellule</td><td>Le bouffi</td></tr></table>";
+                case 26: return "<table class='ennemy'><tr><td>Dragon - juge</td><td>Le brutal</td></tr></table>";
+                case 31: return "<table class='ennemy'><tr><td>Dragon - luciole</td><td>Le cruel</td></tr></table>";
+                case 32: return "<table class='ennemy'><tr><td>Dragon - ruche</td><td>Le destructeur</td></tr></table>";
+                case 33: return "<table class='ennemy'><tr><td>Drakaragne</td><td>Le dévoreur</td></tr></table>";
+                case 34: return "<table class='ennemy'><tr><td>Drakoférox</td><td>Le fou</td></tr></table>";
+                case 35: return "<table class='ennemy'><tr><td>Drakomouth</td><td>Le furibond</td></tr></table>";
+                case 36: return "<table class='ennemy'><tr><td>Drasaurus</td><td>Le gluant</td></tr></table>";
+                case 41: return "<table class='ennemy'><tr><td>Écailleux</td><td>Le gravide</td></tr></table>";
+                case 42: return "<table class='ennemy'><tr><td>Flamiche</td><td>Le majestueux</td></tr></table>";
+                case 43: return "<table class='ennemy'><tr><td>Frégatine</td><td>Le maléfique</td></tr></table>";
+                case 44: return "<table class='ennemy'><tr><td>Gran’cornu</td><td>Le nerveux</td></tr></table>";
+                case 45: return "<table class='ennemy'><tr><td>Lourchefangue</td><td>Le noir</td></tr></table>";
+                case 46: return "<table class='ennemy'><tr><td>Malifeux</td><td>Le pénible</td></tr></table>";
+                case 51: return "<table class='ennemy'><tr><td>Mange - monde</td><td>Le puant</td></tr></table>";
+                case 52: return "<table class='ennemy'><tr><td>Maresqueux</td><td>Le quêteur</td></tr></table>";
+                case 53: return "<table class='ennemy'><tr><td>Négéglace</td><td>Le rouge</td></tr></table>";
+                case 54: return "<table class='ennemy'><tr><td>Noir de suie</td><td>Le rusé</td></tr></table>";
+                case 55: return "<table class='ennemy'><tr><td>Pustuleux</td><td>Le sinistre</td></tr></table>";
+                case 56: return "<table class='ennemy'><tr><td>Queue - d’épines</td><td>Le sourd</td></tr></table>";
+                case 61: return "<table class='ennemy'><tr><td>Ricaneur</td><td>Le tarabusteur</td></tr></table>";
+                case 62: return "<table class='ennemy'><tr><td>Salamandrake</td><td>Le terrifiant</td></tr></table>";
+                case 63: return "<table class='ennemy'><tr><td>Scaracier</td><td>Le torve</td></tr></table>";
+                case 64: return "<table class='ennemy'><tr><td>Tarantantale</td><td>Le tragédien</td></tr></table>";
+                case 65: return "<table class='ennemy'><tr><td>Ténébrax</td><td>Le troué</td></tr></table>";
+                case 66: return "<table class='ennemy'><tr><td>Vifombre</td><td>Le verbeux</td></tr></table>";
                 default: return "Error";
             }
         case "assassin":
@@ -294,3 +296,7 @@ const theEnnemy = function (ennemy) {
         default: return 'Error';
     }
 };
+
+currentScenar = new Scenar(theBegining(), theMission(), thePlace(), theEnnemy('random'))
+allScenar.push(currentScenar)
+scenarsToHTML(currentScenar, allScenar)

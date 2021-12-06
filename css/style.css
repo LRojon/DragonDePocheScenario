@@ -94,12 +94,22 @@ table:not(.ennemy) {
 
 table:not(.ennemy) td, table:not(.ennemy) th {
     border: solid 1px #fff8;
-    height: 50px;
     border-right: none;
     border-left: none;
 }
 table:not(.ennemy) td > span {
     text-align: center;
+}
+
+th {
+    height: 40px;
+}
+tr {
+    height: 20px;
+}
+tr.separator {
+    height: 5px;
+    background: repeating-linear-gradient(135deg, #fff8 ,#fff8 10px, #0000 10px, #0000 20px)
 }
 
 /*table::before {
